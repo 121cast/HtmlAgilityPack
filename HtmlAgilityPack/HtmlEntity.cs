@@ -642,9 +642,10 @@ namespace HtmlAgilityPack
                                     else
                                     {
                                         // named entity?
+										// KeyNotFoundException patch based on https://htmlagilitypack.codeplex.com/workitem/33586
                                         int code;
-                                        object o = _entityValue[entity.ToString()];
-                                        if (o == null)
+										_entityValue.TryGetValue(entity.ToString(), out code);
+                                        if (code == 0)
                                         {
                                             // nope
                                             sb.Append("&" + entity + ";");
@@ -652,7 +653,6 @@ namespace HtmlAgilityPack
                                         else
                                         {
                                             // we found one
-                                            code = (int) o;
                                             sb.Append(Convert.ToChar(code));
                                         }
                                     }
